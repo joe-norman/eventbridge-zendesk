@@ -1,64 +1,114 @@
-Welcome to the AWS CodeStar sample web application
-==================================================
+# Automated ticket analysis and escalation
 
-This sample code helps get you started with a simple Node.js web service deployed by AWS CloudFormation to AWS Lambda and Amazon API Gateway.
+![Zendesk Ticket](screenshots/zen_example_md.gif)
 
-What's Here
------------
+- [Automated ticket analysis and escalation](#automated-ticket-analysis-and-escalation)
+- [Intro](#intro)
+  - [Requirements](#requirements)
+  - [Installation Instructions](#installation-instructions)
+  - [Parameter Details](#parameter-details)
+    - [Escalation Wait time parameters](#escalation-wait-time-parameters)
+    - [Zendesk Integration parameters](#zendesk-integration-parameters)
+  - [How it works](#how-it-works)
+  - [Set up](#set-up)
+  - [Running the application](#running-the-application)
+  - [Integrating Zendesk with Event Bridge](#integrating-zendesk-with-event-bridge)
 
-This sample includes:
+# Intro
+This application "listens" for a ticket creation event from Zendesk, analyses the ticket for negative sentiment, tags the ticket accordingly and invokes an automated workflow (Step function) that escalates the ticket's priority according to your SLA wait times.
 
-* README.md - this file
-* buildspec.yml - this file is used by AWS CodeBuild to package your
-  application for deployment to AWS Lambda
-* index.js - this file contains the sample Node.js code for the web service
-* template.yml - this file contains the AWS Serverless Application Model (AWS SAM) used
-  by AWS CloudFormation to deploy your application to AWS Lambda and Amazon API
-  Gateway.
-* tests/ - this directory contains unit tests for your application
-* template-configuration.json - this file contains the project ARN with placeholders used for tagging resources with the project ID
+Important: this application uses various AWS services and there are costs associated with these services after the Free Tier usage - please see the [AWS  pricing page](https://aws.amazon.com/pricing/) for details.  This application also requires a Zendesk account.
 
-What Do I Do Next?
-------------------
+```bash
+.
+├── README.MD                       <-- This instructions file
+├── screenshots                     <-- Screenshots
+└── lambdas                         <-- dir for the lambda functions
+│   └── getFullTicket               <-- dir for the GettFullTicket Lambda Function
+│   │   └── getFullTicket.js        <-- lambda function, uses Zendesk API to return Full ticket data
+│   │   └── package.json            <-- NodeJS dependencies and scripts for this function
+│   └── getSentiment                <-- dir for the getSentiment Lambda Function
+│   │   └── getSentiment.js         <-- lambda function, invokes Comprehend:DetectSentiment
+│   │   └── package.json            <-- NodeJS dependencies and scripts for this function
+│   └── setPriority                 <-- dir for the setPriority Lambda Function
+│   │   └── setPriority.js          <-- lambda function, uses Zendesk api to update ticket priority
+│   │   └── package.json            <-- NodeJS dependencies and scripts for this function
+│   └── setTags                     <-- dir for the setTags Lambda Function
+│   │   └── setTags.js              <-- lambda function, uses Zendesk api to update ticket tags
+│   │   └── package.json            <-- NodeJS dependencies and scripts for this function
+├── template.yml                    <-- SAM template
+├── buildspec.yml                   <-- CodeBuild template
+├── LICENSE                         <-- MIT license file
+```
 
-If you have checked out a local copy of your repository you can start making
-changes to the sample code.  We suggest making a small change to index.js first,
-so you can see how changes pushed to your project's repository are automatically
-picked up by your project pipeline and deployed to AWS Lambda and Amazon API Gateway.
-(You can watch the pipeline progress on your AWS CodeStar project dashboard.)
-Once you've seen how that works, start developing your own code, and have fun!
+## Requirements
 
-To run your tests locally, go to the root directory of the
-sample code and run the `npm test` command, which
-AWS CodeBuild also runs through your `buildspec.yml` file.
+- AWS CLI already configured with Administrator permission
+- Zendesk account with Event bridge integration enabled.
 
-To test your new code during the release process, modify the existing tests or
-add tests to the tests directory. AWS CodeBuild will run the tests during the
-build stage of your project pipeline. You can find the test results
-in the AWS CodeBuild console.
+## Installation Instructions
 
-Learn more about AWS CodeBuild and how it builds and tests your application here:
-https://docs.aws.amazon.com/codebuild/latest/userguide/concepts.html
+1. [Create an AWS account](https://portal.aws.amazon.com/gp/aws/developer/registration/index.html) if you do not already have one and login.
+2. [Create a Zendesk account](https://www.zendesk.com/register) and activate the Event Bridge integration via [this registration form](https://docs.google.com/forms/d/e/1FAIpQLSd_UXeXV5L7vGIyRY6gSL64pu2SS-CmquxNusex60QGR1d_TQ/viewform)
+3. Go to the app's page on the [Serverless Application Repository](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:677501797858:applications~Automated-Support-Ticket-Moderator) and click "Deploy"
+4. Provide the required app parameters (see parameter details below) and click "Deploy"
 
-Learn more about AWS Serverless Application Model (AWS SAM) and how it works here:
-https://github.com/awslabs/serverless-application-model/blob/master/HOWTO.md
+## Parameter Details
+### Escalation Wait time parameters
 
-AWS Lambda Developer Guide:
-http://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html
+* `SLANormalWait`: provide a level 1 wait time for tickets that has priority status "normal"
+* `SLAHighWait`: provide a level 2 wait time for tickets that has priority status "High"
+* `SLAUrgentWait`: provide a level 3 wait time for tickets that has priority status "Urgent"
 
-Learn more about AWS CodeStar by reading the user guide, and post questions and
-comments about AWS CodeStar on our forum.
+### Zendesk Integration parameters
+*   `ZenDeskUsernameKey`: Your Zendesk agent username that will connect to the Zedesk API
+*   `ZenDeskTokenKey`: Your Zendesk API Token
+*   `ZenDeskDomainKey`: Your Unique Zendesk Domain name (excluding https:// and .com)
+for instructions on where to find these go to [Integrating Zendesk with Event Bridge](https://github.com/bls20AWS/severless-ticket-sentiment-analysys-and-automated-escalation#integrating-zeddesk-with-event-bridge)
 
-User Guide: http://docs.aws.amazon.com/codestar/latest/userguide/welcome.html
+## How it works
 
-Forum: https://forums.aws.amazon.com/forum.jspa?forumID=248
+![Step Functions Ticket](screenshots/stepFunctionExample2.png)
 
-What Should I Do Before Running My Project in Production?
-------------------
+- This application deploys 4 lambda functions that are orchestrated via a single step function.
+- The step function's execution is triggered when a ticket is created via an event bridge integration with Zendesk.
+- First the ticket's subject is a analysed for negative sentiment using AWS Comprehend.  
+- If it is found to be negative, then an API call is made to Zendesk to retrieve the ticket's full metadata.
+- A tag `negative` is applied to the ticket.
+- The ticket now enters the escalation loop, if the ticket is not closed it's `priority` is escalated after each wait time is reached.
+- The step function exits when the ticket is closed, or the final escalation `urgent` wait time has passed.
 
-AWS recommends you review the security best practices recommended by the framework
-author of your selected sample application before running it in production. You
-should also regularly review and apply any available patches or associated security
-advisories for dependencies used within your application.
+## Set up
 
-Best Practices: https://docs.aws.amazon.com/codestar/latest/userguide/best-practices.html?icmpid=docs_acs_rm_sec
+- Deploy this serverless application with your Zendesk credentials and SLA wait times.
+- Create a Zendesk Event Bus with Event Bridge (instructions below).
+
+## Running the application
+
+Once set up is complete, create a ticket in Zendesk and see it's tag and priority update over the course of the step function's life cycle.
+
+## Integrating Zendesk with Event Bridge
+![Zendesk Ticket](screenshots/zendeskExample1.png)
+- Follow these instructions to create a Zendesk Event bus.
+- [connect Zendesk to aws EventBridge](https://support.zendesk.com/hc/en-us/community/posts/360033236454-Sending-Zendesk-events-to-Amazon-EventBridge-)
+- Create a new Rule for the event bus.
+    - Select Partner integration > Zendesk
+    - Edit the event pattern with the JSON script below:
+         ```javascript
+        {
+            "account": [
+                "{YourAWSAccountNumber}"
+            ],
+            "detail-type": [
+                "Support Ticket: Ticket Created"
+            ]
+        }
+        ```
+  - Select the Zendesk event bus.
+  - Select Step Function State Machines as the target.
+  - Select the new Sate machine.
+  - Select `Create A new role for this resource`.
+  - Make sure the rule is enabled.
+
+Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+SPDX-License-Identifier: MIT-0
