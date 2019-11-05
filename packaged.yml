@@ -148,7 +148,7 @@ Resources:
   ZenDeskDemoTranslateTicket:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://nojosep-sam/1de56c6a2e38303dbf7c32f0284bfa1a
+      CodeUri: s3://nojosep-sam/5391cfb8ea7c1d49b4e730b3a091508a
       Handler: translateTicket.handler
       Runtime: nodejs10.x
       Role:
@@ -158,7 +158,7 @@ Resources:
   ZenDeskWriteToS3:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://nojosep-sam/992beed7a75fe71124dac9ca97d65d52
+      CodeUri: s3://nojosep-sam/de9e1b26701155e72bc43ccef64785c5
       Handler: writeToS3.handler
       Runtime: nodejs10.x
       Role:

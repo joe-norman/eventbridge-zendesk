@@ -8,7 +8,7 @@ Description: >
   
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: Zendesk and AWS EventBridge Demo Serverless App
+    Name: Zendesk-AWS-EventBridge
     Description: This application analyzes Zendesk tickets for negative sentiment, tags them as 'negative' and applies a customizable escalation time frame. It also translates tickets, finds keywords, and sends them to S3 for analysis.
     Author: Joe Norman
     SpdxLicenseId: MIT-0
