@@ -8,8 +8,8 @@ Description: >
   
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: Zendesk Event Bridge integration
-    Description: This application analyses Zendesk tickets for negative sentiment, tags them as 'negative' and applies a customizable escalation time frame. It also translates tickets, finds keywords, and sends them to S3 for analysis.
+    Name: Zendesk and AWS EventBridge Demo Serverless App
+    Description: This application analyzes Zendesk tickets for negative sentiment, tags them as 'negative' and applies a customizable escalation time frame. It also translates tickets, finds keywords, and sends them to S3 for analysis.
     Author: Joe Norman
     SpdxLicenseId: MIT-0
     LicenseUrl: LICENSE
@@ -65,6 +65,13 @@ Parameters:
     Type: String
     Default: 120
 ##########################################################################
+#  Lambda Environment Params : Analytics                       #
+########################################################################## 
+  S3_Bucket_Analytics:
+    Description: S3 bucket name for dropping data used in Analytics
+    Type: String
+    Default: ''
+##########################################################################
 #  Event Bridge  Params : source name and acct ID                        #
 ########################################################################## 
   EventSourceName:
@@ -96,7 +103,7 @@ Resources:
                 Fn::GetAtt:
                 - MyLambdaExecutionRole
                 - Arn
-            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+            Environment:
                 Variables:
                     ZenDeskUsername: !Ref ZenDeskUsernameKey
                     ZenDeskPassword: !Ref ZenDeskTokenKey
@@ -111,7 +118,7 @@ Resources:
                 Fn::GetAtt:
                 - MyLambdaExecutionRole
                 - Arn
-            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+            Environment:
     ZenDeskDemoSetTags:
         Type: AWS::Serverless::Function # Function Resource: 
         Properties:
@@ -122,7 +129,7 @@ Resources:
                 Fn::GetAtt:
                 - MyLambdaExecutionRole
                 - Arn
-            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+            Environment:
                 Variables:
                     ZenDeskUsername: !Ref ZenDeskUsernameKey
                     ZenDeskPassword: !Ref ZenDeskTokenKey
@@ -137,11 +144,34 @@ Resources:
                 Fn::GetAtt:
                 - MyLambdaExecutionRole
                 - Arn
-            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+            Environment:
                 Variables:
                     ZenDeskUsername: !Ref ZenDeskUsernameKey
                     ZenDeskPassword: !Ref ZenDeskTokenKey
-                    ZenDeskDomain: !Ref ZenDeskDomainKey                   
+                    ZenDeskDomain: !Ref ZenDeskDomainKey     
+    ZenDeskDemoTranslateTicket:
+        Type: AWS::Serverless::Function # Function Resource: 
+        Properties:
+            CodeUri: lambdas/translateTicket
+            Handler: translateTicket.handler
+            Runtime: nodejs10.x
+            Role:
+                Fn::GetAtt:
+                - MyTranslateTextExecutionRole
+                - Arn
+    ZenDeskWriteToS3:
+        Type: AWS::Serverless::Function # Function Resource: 
+        Properties:
+            CodeUri: lambdas/writeToS3
+            Handler: writeToS3.handler
+            Runtime: nodejs10.x
+            Role:
+                Fn::GetAtt:
+                - MyWriteToS3ExecutionRole
+                - Arn
+            Environment:
+                Variables:
+                    S3_Bucket_Analytics: !Ref S3_Bucket_Analytics
 ##########################################################################
 #   STEP FUNCTION                                                        #
 ##########################################################################
@@ -209,8 +239,6 @@ Resources:
                        ],
                        "Default": "ClosedOrNotNegative"
                      },
-                     
-                    
                  
                      "setTags": {
                        "Type" : "Task",
@@ -243,7 +271,6 @@ Resources:
                         "Default": "SLANormalWait"
                         
                      },
-                     
                      
                     "FinalEscalationState": {
                             "Comment" : "Ticket cannot be escalated further",
@@ -349,6 +376,44 @@ Resources:
                       - "lambda:InvokeFunction"
                       - "comprehend:DetectSentiment"
                     Resource: "*"
+    MyWriteToS3ExecutionRole:
+        Description: Lambda service role to write to Analytics S3 Bucket
+        Type: AWS::IAM::Role
+        Properties:
+          RoleName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}-WriteToS3LambdaRole'
+          AssumeRolePolicyDocument:
+            Statement:
+            - Effect: Allow
+              Principal:
+               Service: [lambda.amazonaws.com]
+              Action: sts:AssumeRole
+              Path: "/"
+              ManagedPolicyArns:
+                - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+              Policies:
+                - PolicyName: WriteToS3ExecutionPolicy
+                  PolicyDocument:
+                    Version: "2012-10-17"
+                    Statement:
+                     - Effect: Allow
+                       Action:
+                        - "s3:PutObject"
+                       Resource: !Sub 'arn:aws:s3:::$(S3_Bucket_Analytics)'
+    MyTranslateTextExecutionRole:
+        Description: Lambda role for Translate Text function
+        Type: AWS::IAM::Role
+        Properties:
+          RoleName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}-TranslateTextLambdaRole'
+          AssumeRolePolicyDocument:
+            Statement:
+            - Effect: Allow
+              Principal:
+                Service: [lambda.amazonaws.com]
+              Action: sts:AssumeRole
+          Path: /
+          ManagedPolicyArns:
+            - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+            - !Sub 'arn:${AWS::Partition}:iam::aws:policy/TranslateFullAccess'
 ##########################################################################
 #   EVENT  BRIDGE                                                        #
 ##########################################################################
