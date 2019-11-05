@@ -7,7 +7,7 @@ Description: 'sam-app Sample SAM Template for sam-app
   '
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: Zendesk and AWS EventBridge Demo Serverless App
+    Name: Zendesk-AWS-EventBridge
     Description: This application analyzes Zendesk tickets for negative sentiment,
       tags them as 'negative' and applies a customizable escalation time frame. It
       also translates tickets, finds keywords, and sends them to S3 for analysis.
@@ -20,8 +20,7 @@ Metadata:
     - moderation
     - sentiment
     - lambda
-    - event Bridge
-    - step functions
+    - eventbridge
     - comprehend
     HomePageUrl: https://github.com/joe-norman/eventbridge-zendesk
     SemanticVersion: 1.0.0

@@ -14,7 +14,7 @@ Metadata:
     SpdxLicenseId: MIT-0
     LicenseUrl: LICENSE
     ReadmeUrl: README.md
-    Labels: ['zendesk', 'moderation', 'sentiment', 'lambda','event Bridge','step functions', 'comprehend']
+    Labels: ['zendesk', 'moderation', 'sentiment', 'lambda','eventbridge', 'comprehend']
     HomePageUrl: https://github.com/joe-norman/eventbridge-zendesk
     SemanticVersion: 1.0.0
     SourceCodeUrl: https://github.com/joe-norman/eventbridge-zendesk
