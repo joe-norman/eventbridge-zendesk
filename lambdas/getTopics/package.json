@@ -1,0 +1,14 @@
+{
+  "name": "gettopics",
+  "version": "1.0.0",
+  "description": "Use Amazon Comprehend to get key phrases from a Zendesk ticket",
+  "main": "getTopics.js",
+  "dependencies": {
+    "aws-sdk": "^2.504.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joe Norman",
+  "license": "MIT"
+}

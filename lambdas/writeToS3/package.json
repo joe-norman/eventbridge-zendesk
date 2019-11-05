@@ -1,0 +1,15 @@
+{
+  "name": "writetos3",
+  "version": "1.0.0",
+  "description": "Write a csv of topics and sentiment to S3 to do analysis",
+  "main": "writeToS3.js",
+    "dependencies": {
+    "aws-sdk": "^2.504.0",
+    "axios": "^0.18.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joe Norman",
+  "license": "MIT"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "translateticket",
+  "version": "1.0.0",
+  "description": "Translate a Zendesk ticket to English",
+  "main": "translateTicket.js",
+  "dependencies": {
+    "aws-sdk": "^2.504.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joe Norman",
+  "license": "MIT"
+}
