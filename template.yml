@@ -398,7 +398,7 @@ Resources:
                      - Effect: Allow
                        Action:
                         - "s3:PutObject"
-                       Resource: !Sub 'arn:aws:s3:::$(S3_Bucket_Analytics)'
+                       Resource: !Sub 'arn:aws:s3:::$(S3_Bucket_Analytics)/*'
     MyTranslateTextExecutionRole:
         Description: Lambda role for Translate Text function
         Type: AWS::IAM::Role
