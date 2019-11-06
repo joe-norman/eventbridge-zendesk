@@ -67,7 +67,7 @@ Parameters:
 ##########################################################################
 #  Lambda Environment Params : Analytics                       #
 ########################################################################## 
-  S3_Bucket_Analytics:
+  S3BucketAnalytics:
     Description: S3 bucket name for dropping data used in Analytics
     Type: String
     Default: ''
@@ -171,7 +171,7 @@ Resources:
                 - Arn
             Environment:
                 Variables:
-                    S3_Bucket_Analytics: !Ref S3_Bucket_Analytics
+                    S3BucketAnalytics: !Ref S3BucketAnalytics
 ##########################################################################
 #   STEP FUNCTION                                                        #
 ##########################################################################
@@ -398,7 +398,7 @@ Resources:
                      - Effect: Allow
                        Action:
                         - "s3:PutObject"
-                       Resource: !Sub 'arn:aws:s3:::$(S3_Bucket_Analytics)/*'
+                       Resource: !Sub 'arn:aws:s3:::$(S3BucketAnalytics)/*'
     MyTranslateTextExecutionRole:
         Description: Lambda role for Translate Text function
         Type: AWS::IAM::Role
