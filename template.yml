@@ -171,7 +171,7 @@ Resources:
                 - Arn
             Environment:
                 Variables:
-                    S3BucketAnalytics: !Ref S3BucketAnalytics
+                    S3BucketForAnalytics: !Ref S3BucketAnalytics
 ##########################################################################
 #   STEP FUNCTION                                                        #
 ##########################################################################

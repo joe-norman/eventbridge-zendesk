@@ -2,14 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: 'sam-app Sample SAM Template for sam-app
 
   '
-Globals:
-  Function:
-    AutoPublishAlias: live
-    DeploymentPreference:
-      Enabled: true
-      Role:
-        Ref: CodeDeployRole
-      Type: Canary10Percent5Minutes
 Metadata:
   AWS::ServerlessRepo::Application:
     Author: Joe Norman
@@ -97,7 +89,7 @@ Resources:
       - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/ComprehendFullAccess
       Path: /
       RoleName:
-        Fn::Sub: CodeStar-${ProjectId}-Execution${Stage}
+        Fn::Sub: Zendesk-EventBridge-LambdaExecutionRole
     Type: AWS::IAM::Role
   MyStatesExecutionRole:
     Properties:
@@ -136,7 +128,7 @@ Resources:
       - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/TranslateFullAccess
       Path: /
       RoleName:
-        Fn::Sub: CodeStar-${ProjectId}-Execution${Stage}-TranslateTextLambdaRole
+        Fn::Sub: Zendesk-EventBridge-TranslateTextLambdaRole
     Type: AWS::IAM::Role
   MyWriteToS3ExecutionRole:
     Description: Lambda service role to write to Analytics S3 Bucket
@@ -162,11 +154,11 @@ Resources:
             Service:
             - lambda.amazonaws.com
       RoleName:
-        Fn::Sub: CodeStar-${ProjectId}-Execution${Stage}-WriteToS3LambdaRole
+        Fn::Sub: Zendesk-EventBridge-WriteToS3LambdaRole
     Type: AWS::IAM::Role
   ZenDeskDemoGetFullTicket:
     Properties:
-      CodeUri: s3://nojosep-sam/1e5accdb0c28bae7b5fdce61f662278d
+      CodeUri: s3://nojosep-sam/dbbc1147619548e9c9ac6df3aabc2ec1
       Environment:
         Variables:
           ZenDeskDomain:
@@ -184,7 +176,7 @@ Resources:
     Type: AWS::Serverless::Function
   ZenDeskDemoGetSentiment:
     Properties:
-      CodeUri: s3://nojosep-sam/81bf993b3c0da0e23a70c9ad65b755b2
+      CodeUri: s3://nojosep-sam/52f2df946ad64261cc451dc195463b77
       Environment: null
       Handler: getSentiment.handler
       Role:
@@ -195,7 +187,7 @@ Resources:
     Type: AWS::Serverless::Function
   ZenDeskDemoSetPriority:
     Properties:
-      CodeUri: s3://nojosep-sam/d1a589d38d53856203f6c6705bdae3a5
+      CodeUri: s3://nojosep-sam/bf5e1175c392b57818f224e2a61b6e2f
       Environment:
         Variables:
           ZenDeskDomain:
@@ -213,7 +205,7 @@ Resources:
     Type: AWS::Serverless::Function
   ZenDeskDemoSetTags:
     Properties:
-      CodeUri: s3://nojosep-sam/76b3c26894f91ad1e12edd6c2702f14a
+      CodeUri: s3://nojosep-sam/af0e7d774c96b5baf80b6f6758d76e0e
       Environment:
         Variables:
           ZenDeskDomain:
@@ -231,7 +223,7 @@ Resources:
     Type: AWS::Serverless::Function
   ZenDeskDemoTranslateTicket:
     Properties:
-      CodeUri: s3://nojosep-sam/edb6e7538f5d76f70830c09988d5b2b4
+      CodeUri: s3://nojosep-sam/b34248e088ebe95dbff6707275864d8e
       Handler: translateTicket.handler
       Role:
         Fn::GetAtt:
@@ -241,7 +233,7 @@ Resources:
     Type: AWS::Serverless::Function
   ZenDeskWriteToS3:
     Properties:
-      CodeUri: s3://nojosep-sam/3dfbb5e572ceaa776324782b44c627ba
+      CodeUri: s3://nojosep-sam/d669e993b89e3f87e9fa023ebd1f73ce
       Environment:
         Variables:
           S3BucketAnalytics:
