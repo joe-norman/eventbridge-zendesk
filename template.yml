@@ -81,13 +81,13 @@ Metadata:
 
 
 
-Globals:
-  Function:
-    AutoPublishAlias: live
-    DeploymentPreference:
-      Enabled: true
-      Type: Canary10Percent5Minutes
-      Role: !Ref CodeDeployRole
+# Globals:
+#   Function:
+#     AutoPublishAlias: live
+#     DeploymentPreference:
+#       Enabled: true
+#       Type: Canary10Percent5Minutes
+#       Role: !Ref CodeDeployRole
 
 Resources:
 ##########################################################################
@@ -343,7 +343,7 @@ Resources:
         Description: Creating service role in IAM for AWS Lambda
         Type: AWS::IAM::Role
         Properties:
-          RoleName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}'
+          RoleName: !Sub 'Zendesk-EventBridge-LambdaExecutionRole'
           AssumeRolePolicyDocument:
             Statement:
             - Effect: Allow
@@ -380,7 +380,7 @@ Resources:
         Description: Lambda service role to write to Analytics S3 Bucket
         Type: AWS::IAM::Role
         Properties:
-          RoleName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}-WriteToS3LambdaRole'
+          RoleName: !Sub 'Zendesk-EventBridge-WriteToS3LambdaRole'
           AssumeRolePolicyDocument:
             Statement:
             - Effect: Allow
@@ -403,7 +403,7 @@ Resources:
         Description: Lambda role for Translate Text function
         Type: AWS::IAM::Role
         Properties:
-          RoleName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}-TranslateTextLambdaRole'
+          RoleName: !Sub 'Zendesk-EventBridge-TranslateTextLambdaRole'
           AssumeRolePolicyDocument:
             Statement:
             - Effect: Allow
