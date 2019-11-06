@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 
 - AWS::Serverless-2016-10-31
-- AWS::CodeStar
+#- AWS::CodeStar
 Description: >
   sam-app
   Sample SAM Template for sam-app
@@ -23,17 +23,17 @@ Metadata:
 ##########################################################################
 #  Code Star Params                                                      #
 ##########################################################################
-Parameters:
-  ProjectId:
-    Type: String
-    Description: AWS CodeStar projectID used to associate new resources to team members
-  CodeDeployRole:
-    Type: String
-    Description: IAM role to allow AWS CodeDeploy to manage deployment of AWS Lambda functions
-  Stage:
-    Type: String
-    Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
-    Default: ''
+# Parameters:
+#   ProjectId:
+#     Type: String
+#     Description: AWS CodeStar projectID used to associate new resources to team members
+#   CodeDeployRole:
+#     Type: String
+#     Description: IAM role to allow AWS CodeDeploy to manage deployment of AWS Lambda functions
+#   Stage:
+#     Type: String
+#     Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
+#     Default: ''
 ##########################################################################
 #  Lambda Environment Params: Zendesk Integration                        #
 ########################################################################## 
