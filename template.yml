@@ -19,21 +19,6 @@ Metadata:
     SemanticVersion: 1.0.0
     SourceCodeUrl: https://github.com/joe-norman/eventbridge-zendesk
 
-  
-##########################################################################
-#  Code Star Params                                                      #
-##########################################################################
-# Parameters:
-#   ProjectId:
-#     Type: String
-#     Description: AWS CodeStar projectID used to associate new resources to team members
-#   CodeDeployRole:
-#     Type: String
-#     Description: IAM role to allow AWS CodeDeploy to manage deployment of AWS Lambda functions
-#   Stage:
-#     Type: String
-#     Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
-#     Default: ''
 ##########################################################################
 #  Lambda Environment Params: Zendesk Integration                        #
 ########################################################################## 
@@ -399,6 +384,8 @@ Resources:
                        Action:
                         - "s3:PutObject"
                        Resource: !Sub 'arn:aws:s3:::$(S3BucketAnalytics)/*'
+        DependsOn:
+          - S3BucketAnalytics
     MyTranslateTextExecutionRole:
         Description: Lambda role for Translate Text function
         Type: AWS::IAM::Role
