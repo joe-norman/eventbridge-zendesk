@@ -25,15 +25,15 @@ Parameters:
 ########################################################################## 
   ZenDeskUsernameKey:
     Description: Your agent username that will connect to the Zedesk API - email
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: String
     Default: ZenDeskUsername
   ZenDeskTokenKey:
     Description: Your API Token
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: String
     Default: ZenDeskToken
   ZenDeskDomainKey:
     Description: Your Unique Zendesk Domain name (excluding https:// and .com)
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: String
     Default: ZenDeskDomain
 ##########################################################################
 #  Lambda Environment Params : Escalation times                          #
@@ -180,7 +180,7 @@ Resources:
                      
                      "TranslateTicket": {
                         "Type": "Task",
-                        "Resource": "${ZenDeskDemoTranslateTicket.Arn",
+                        "Resource": "${ZenDeskDemoTranslateTicket.Arn}",
                         "InputPath": "$",
                         "ResultPath": "$",
                         "OutputPath": "$",
@@ -189,7 +189,7 @@ Resources:
                      
                      "GetTopics": {
                         "Type": "Task",
-                        "Resource": "${ZenDeskDemoGetTopics.Arn",
+                        "Resource": "${ZenDeskDemoGetTopics.Arn}",
                         "InputPath": "$",
                         "ResultPath": "$.topics",
                         "OutputPath": "$",
