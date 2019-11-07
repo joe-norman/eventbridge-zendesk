@@ -69,7 +69,7 @@ Metadata:
 ########################################################################## 
   S3BucketAnalytics:
     Description: S3 bucket name for dropping data used in Analytics
-    Type: String
+    Type: Type: AWS::SSM::Parameter::Value<String>
     Default: ''
 ##########################################################################
 #  Event Bridge  Params : source name and acct ID                        #
