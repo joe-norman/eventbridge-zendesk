@@ -19,6 +19,7 @@ Metadata:
     SemanticVersion: 1.0.0
     SourceCodeUrl: https://github.com/joe-norman/eventbridge-zendesk
 
+Parameters:
 ##########################################################################
 #  Lambda Environment Params: Zendesk Integration                        #
 ########################################################################## 
