@@ -329,7 +329,7 @@ Resources:
         Description: Creating service role in IAM for AWS Lambda
         Type: AWS::IAM::Role
         Properties:
-          RoleName: !Sub 'Zendesk-EventBridge-LambdaExecutionRole'
+          RoleName: 'ZendeskEventBridgeLambdaExecutionRole'
           AssumeRolePolicyDocument:
             Statement:
             - Effect: Allow
@@ -366,7 +366,7 @@ Resources:
         Description: Lambda service role to write to Analytics S3 Bucket
         Type: AWS::IAM::Role
         Properties:
-          RoleName: !Sub 'Zendesk-EventBridge-WriteToS3LambdaRole'
+          RoleName: !Sub 'ZendeskEventBridgeWriteToS3LambdaRole'
           AssumeRolePolicyDocument:
             Statement:
             - Effect: Allow
@@ -389,7 +389,7 @@ Resources:
         Description: Lambda role for Translate Text function
         Type: AWS::IAM::Role
         Properties:
-          RoleName: !Sub 'Zendesk-EventBridge-TranslateTextLambdaRole'
+          RoleName: !Sub 'ZendeskEventBridgeTranslateTextLambdaRole'
           AssumeRolePolicyDocument:
             Statement:
             - Effect: Allow
