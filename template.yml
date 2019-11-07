@@ -145,7 +145,7 @@ Resources:
                 Fn::GetAtt:
                 - MyTranslateTextExecutionRole
                 - Arn
-    ZenDeskWriteToS3:
+    ZenDeskDemoWriteToS3:
         Type: AWS::Serverless::Function # Function Resource: 
         Properties:
             CodeUri: lambdas/writeToS3
