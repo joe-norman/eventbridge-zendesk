@@ -421,10 +421,7 @@ Resources:
         Targets:
           - Arn: >-
               !Ref ZendDemoStateMachine
-            RoleArn: >-
-              Fn::GetAtt:
-                - MyStatesExecutionRole
-                - Arn
+            RoleArn: [ MyStatesExecutionRole, Arn ]
             Id: NewTicketSFN
       DependsOn:
         - ZendeskEventBus
