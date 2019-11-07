@@ -54,7 +54,7 @@ Metadata:
 ########################################################################## 
   S3BucketAnalytics:
     Description: S3 bucket name for dropping data used in Analytics
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: String
     Default: ''
 ##########################################################################
 #  Event Bridge  Params : source name and acct ID                        #
@@ -383,9 +383,7 @@ Resources:
                      - Effect: Allow
                        Action:
                         - "s3:PutObject"
-                       Resource: !Sub 'arn:aws:s3:::$(S3BucketAnalytics)/*'
-        DependsOn:
-          - S3BucketAnalytics
+                       Resource: !Sub 'arn:aws:s3:::${S3BucketAnalytics}/*'
     MyTranslateTextExecutionRole:
         Description: Lambda role for Translate Text function
         Type: AWS::IAM::Role
