@@ -158,6 +158,16 @@ Resources:
             Environment:
                 Variables:
                     S3BucketForAnalytics: !Ref S3BucketAnalytics
+    ZenDeskDemoGetTopics:
+        Type: AWS::Serverless::Function # Function Resource: 
+        Properties:
+            CodeUri: lambdas/getTopics
+            Handler: getTopics.handler
+            Runtime: nodejs10.x
+            Role:
+                Fn::GetAtt:
+                - MyLambdaExecutionRole
+                - Arn
 ##########################################################################
 #   STEP FUNCTION                                                        #
 ##########################################################################
