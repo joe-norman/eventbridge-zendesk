@@ -346,7 +346,6 @@ Resources:
               Principal:
                 Service: [lambda.amazonaws.com]
               Action: sts:AssumeRole
-          Path: /
           ManagedPolicyArns:
             - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
             - !Sub 'arn:${AWS::Partition}:iam::aws:policy/ComprehendFullAccess'
@@ -361,7 +360,6 @@ Resources:
                   Service:
                     - !Sub states.${AWS::Region}.amazonaws.com
                 Action: "sts:AssumeRole"
-          Path: "/"
           Policies:
             - PolicyName: StatesExecutionPolicy
               PolicyDocument:
@@ -383,7 +381,6 @@ Resources:
               Principal:
                Service: [lambda.amazonaws.com]
               Action: sts:AssumeRole
-              Path: "/"
               ManagedPolicyArns:
                 - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
               Policies:
@@ -406,7 +403,6 @@ Resources:
               Principal:
                 Service: [lambda.amazonaws.com]
               Action: sts:AssumeRole
-          Path: /
           ManagedPolicyArns:
             - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
             - !Sub 'arn:${AWS::Partition}:iam::aws:policy/TranslateFullAccess'
