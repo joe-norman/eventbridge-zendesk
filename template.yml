@@ -377,7 +377,7 @@ Resources:
           RoleName: 'ZendeskEventBridgeWriteToS3LambdaRole'
           AssumeRolePolicyDocument:
             Statement:
-            - Esffect: Allow
+            - Effect: Allow
               Principal:
                Service: [lambda.amazonaws.com]
               Action: sts:AssumeRole
@@ -409,27 +409,27 @@ Resources:
 ##########################################################################
 #   EVENT  BRIDGE                                                        #
 ##########################################################################
-    ZendeskEventBus:
-      Type: 'AWS::Events::EventBus'
-      Properties:
-        EventSourceName: !Ref EventSourceName
-        Name: !Ref EventSourceName
-    MyEventsRule:
-      Type: 'AWS::Events::Rule'
-      Properties:
-        Description: Events Rule with StepFunctionParams
-        EventBusName: !Ref EventSourceName
-        EventPattern:
-          account:
-            - !Ref "AWS::AccountId"
-          detail-type:
-            - 'Support Ticket: Ticket Created'
-        Targets:
-          - Arn: >-
-              !Ref ZendDemoStateMachine
-            RoleArn: [ MyStatesExecutionRole, Arn ]
-            Id: NewTicketSFN
-      DependsOn:
-        - ZendeskEventBus
-        - ZendDemoStateMachine
-        - MyStatesExecutionRole
+    # ZendeskEventBus:
+    #   Type: 'AWS::Events::EventBus'
+    #   Properties:
+    #     EventSourceName: !Ref EventSourceName
+    #     Name: !Ref EventSourceName
+    # MyEventsRule:
+    #   Type: 'AWS::Events::Rule'
+    #   Properties:
+    #     Description: Events Rule with StepFunctionParams
+    #     EventBusName: !Ref EventSourceName
+    #     EventPattern:
+    #       account:
+    #         - !Ref "AWS::AccountId"
+    #       detail-type:
+    #         - 'Support Ticket: Ticket Created'
+    #     Targets:
+    #       - Arn: >-
+    #           !Ref ZendDemoStateMachine
+    #         RoleArn: [ MyStatesExecutionRole, Arn ]
+    #         Id: NewTicketSFN
+    #   DependsOn:
+    #     - ZendeskEventBus
+    #     - ZendDemoStateMachine
+    #     - MyStatesExecutionRole
