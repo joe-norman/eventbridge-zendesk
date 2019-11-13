@@ -427,10 +427,7 @@ Resources:
         Targets:
           -
             Id: NewTicketSFN
-            Arn:
-              Fn::GetAtt:
-                - "ZendeskDemoStateMachine"
-                - "Arn"
+            Arn: >-
               !Ref ZendeskDemoStateMachine
         RoleArn:
           Fn::GetAtt:
