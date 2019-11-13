@@ -1,16 +1,11 @@
 {
-  "name": "ZendApplication",
+  "name": "getsentiment",
   "version": "1.0.0",
-  "description": "ZendApplicationfor NodeJS",
-  "repository": "https://github.com/bls20AWS/severless-ticket-sentiment-analysys-and-automated-esculation",
-  "author": "SAM CLI",
-  "license": "MIT",
-  "dependencies": {
-    "aws-sdk": "^2.504.0"
+  "description": "",
+  "main": "getSentiment.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "scripts": {},
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.1.4"
-  }
+  "author": "Benjamin Smith",
+  "license": "MIT-0"
 }

@@ -1,16 +1,14 @@
 {
-  "name": "ZendApplication",
+  "name": "getfullticket",
   "version": "1.0.0",
-  "description": "ZendApplicationfor NodeJS",
-  "repository": "https://github.com/bls20AWS/severless-ticket-sentiment-analysys-and-automated-esculation",
-  "author": "SAM CLI",
-  "license": "MIT",
-  "dependencies": {
-    "axios": "^0.18.0"
+  "description": "calls Zendesk API and retrieves ticket fields",
+  "main": "getFullTicket.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "scripts": {},
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.1.4"
+  "author": "",
+  "license": "MIT-0",
+  "dependencies": {
+    "axios": "^0.19.0"
   }
 }
