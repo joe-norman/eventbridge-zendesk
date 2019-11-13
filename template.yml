@@ -230,7 +230,7 @@ Resources:
                          {
                            "Variable": "$.sentiment.Sentiment",
                            "StringEquals": "NEGATIVE",
-                           "Next": "FullTicketInfo"
+                           "Next": "setTags"
                          }
                        ],
                        "Default": "ClosedOrNotNegative"
