@@ -368,8 +368,27 @@ Resources:
                   - Effect: Allow
                     Action:
                       - "lambda:InvokeFunction"
-                      - "comprehend:DetectSentiment"
                     Resource: "*"
+    MyEventBridgeExecuteStepFunctionRole:
+        Type: "AWS::IAM::Role"
+        Properties:
+          AssumeRolePolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow" 
+                Principal:
+                  Service:
+                    - events.amazonaws.com
+                Action: "sts:AssumeRole"
+          Policies:
+            - PolicyName: ZendeskDemoInvokeStepFunction
+              PolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                  - Effect: Allow
+                    Action:
+                      - "states:StartExecution"
+                    Resource: !Sub '${ZendeskDemoStateMachine}'
     MyWriteToS3ExecutionRole:
         Description: Lambda service role to write to Analytics S3 Bucket
         Type: AWS::IAM::Role
@@ -427,13 +446,12 @@ Resources:
         Targets:
           -
             Id: NewTicketSFN
-            Arn: >-
-              !Ref ZendeskDemoStateMachine
-        RoleArn:
-          Fn::GetAtt:
-            - "MyStatesExecutionRole"
-            - "Arn"
+            Arn: !Sub '${ZendeskDemoStateMachine}'
+            RoleArn:
+              Fn::GetAtt:
+                - "MyEventBridgeExecuteStepFunctionRole"
+                - "Arn"
       DependsOn:
         - ZendeskDemoStateMachine
-        - MyStatesExecutionRole
+        - MyEventBridgeExecuteStepFunctionRole
         # - ZendeskEventBus
