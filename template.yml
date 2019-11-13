@@ -171,7 +171,7 @@ Resources:
 ##########################################################################
 #   STEP FUNCTION                                                        #
 ##########################################################################
-    ZendDemoStateMachine:
+    ZendeskDemoStateMachine:
       Type: "AWS::StepFunctions::StateMachine"
       Properties:
         DefinitionString: !Sub |
@@ -425,11 +425,18 @@ Resources:
           detail-type:
             - 'Support Ticket: Ticket Created'
         Targets:
-          - Arn: >-
-              !Ref ZendDemoStateMachine
-            RoleArn: [ MyStatesExecutionRole, Arn ]
+          -
             Id: NewTicketSFN
+            Arn:
+              Fn::GetAtt:
+                - "ZendeskDemoStateMachine"
+                - "Arn"
+              !Ref ZendeskDemoStateMachine
+        RoleArn:
+          Fn::GetAtt:
+            - "MyStatesExecutionRole"
+            - "Arn"
       DependsOn:
-        - ZendDemoStateMachine
+        - ZendeskDemoStateMachine
         - MyStatesExecutionRole
         # - ZendeskEventBus
