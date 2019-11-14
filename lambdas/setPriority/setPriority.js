@@ -28,10 +28,10 @@ exports.handler = async (event) => {
             try {
                 const res = await axios({
                     method:"put",
-                    url:`https://${process.env.ZenDeskDomain}.com/api/v2/tickets/${event.id}.json`,
+                    url:`https://${process.env.ZendeskDomain}.com/api/v2/tickets/${event.id}.json`,
                     auth:{
-                        username: `${process.env.ZenDeskUsername}/token`,
-                        password: process.env.ZenDeskPassword
+                        username: `${process.env.ZendeskUsername}/token`,
+                        password: process.env.ZendeskPassword
                     },
                     data: { "ticket":{"priority":newEscalate,"type":"problem"}}
                 });

@@ -12,10 +12,10 @@ exports.handler = async (event) => {
             try {
                 const response = await axios({
                     method:"post",
-                    url:`https://${process.env.ZenDeskDomain}.com/api/v2/tickets/${event.id}/tags.json`,
+                    url:`https://${process.env.ZendeskDomain}.com/api/v2/tickets/${event.id}/tags.json`,
                     auth:{
-                        username: `${process.env.ZenDeskUsername}/token`,
-                        password: process.env.ZenDeskPassword
+                        username: `${process.env.ZendeskUsername}/token`,
+                        password: process.env.ZendeskPassword
                     },
                     data: {
                      "tags": ['negative']
