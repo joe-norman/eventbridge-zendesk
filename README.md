@@ -1,4 +1,4 @@
-# Automated ticket analysis and escalation
+# Automated ticket analysis and escalation (ReadMe out of date)
 
 ![Zendesk Ticket](screenshots/zen_example_md.gif)
 
