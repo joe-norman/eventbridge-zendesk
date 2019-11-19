@@ -7,7 +7,7 @@ exports.handler = async(event, context) => {
         csvdata += (event.id + "," + event.created_at + "," + event.topics[i] + "," + event.sentiment + String.fromCharCode(13));
     }
     var params = {
-        Bucket: process.env.S3_BUCKET_ANALYTICS,
+        Bucket: process.env.S3BucketForAnalytics,
         Key: (event.id + ".csv"),
         Body: csvdata
     };
