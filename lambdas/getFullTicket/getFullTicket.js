@@ -14,8 +14,8 @@ exports.handler = async (event) => {
                     method:"get",
                     url:`https://${process.env.ZendeskDomain}.com/api/v2/tickets/${event.id}.json`,
                     auth:{
-                        username: `${process.env.ZendeskUsername}/token`,
-                        password: process.env.ZendeskPassword
+                        username: `${process.env.ZendeskUserEmail}/token`,
+                        password: process.env.ZendeskAPIKey
                     }
                 });
                 

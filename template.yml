@@ -23,18 +23,18 @@ Parameters:
 ##########################################################################
 #  Lambda Environment Params: Zendesk Integration                        #
 ########################################################################## 
-  ZendeskUsernameKey:
+  ZendeskUserEmail:
     Description: Your agent username that will connect to the Zedesk API. This is an email address.
     Type: String
-    Default: 'Example: jsmith@myDomain.com'
-  ZendeskTokenKey:
+    Default: ''
+  ZendeskAPIKey:
     Description: Your API Token. This is NOT your Zendesk password.
     Type: String
     Default: ''
-  ZendeskDomainKey:
-    Description: Your unique Zendesk domain name (excluding https:// and .com)
+  ZendeskDomain:
+    Description: Your unique Zendesk domain name (excluding https:// and .com). Example - myDomain.zendesk
     Type: String
-    Default: 'Example: myDomain.zendesk'
+    Default: ''
 ##########################################################################
 #  Lambda Environment Params : Escalation times                          #
 ########################################################################## 
@@ -91,9 +91,9 @@ Resources:
                 - Arn
             Environment:
                 Variables:
-                    ZendeskUsername: !Ref ZendeskUsernameKey
-                    ZendeskPassword: !Ref ZendeskTokenKey
-                    ZendeskDomain: !Ref ZendeskDomainKey
+                    ZendeskUserEmail: !Ref ZendeskUserEmail
+                    ZendeskAPIKey: !Ref ZendeskAPIKey
+                    ZendeskDomain: !Ref ZendeskDomain
     ZendeskDemoGetSentiment:
         Type: AWS::Serverless::Function # Function Resource: 
         Properties:
@@ -117,9 +117,9 @@ Resources:
                 - Arn
             Environment:
                 Variables:
-                    ZendeskUsername: !Ref ZendeskUsernameKey
-                    ZendeskPassword: !Ref ZendeskTokenKey
-                    ZendeskDomain: !Ref ZendeskDomainKey
+                    ZendeskUserEmail: !Ref ZendeskUserEmail
+                    ZendeskAPIKey: !Ref ZendeskAPIKey
+                    ZendeskDomain: !Ref ZendeskDomain
     ZendeskDemoSetPriority:
         Type: AWS::Serverless::Function # Function Resource: 
         Properties:
@@ -132,9 +132,9 @@ Resources:
                 - Arn
             Environment:
                 Variables:
-                    ZendeskUsername: !Ref ZendeskUsernameKey
-                    ZendeskPassword: !Ref ZendeskTokenKey
-                    ZendeskDomain: !Ref ZendeskDomainKey     
+                    ZendeskUserEmail: !Ref ZendeskUserEmail
+                    ZendeskAPIKey: !Ref ZendeskAPIKey
+                    ZendeskDomain: !Ref ZendeskDomain     
     ZendeskDemoTranslateTicket:
         Type: AWS::Serverless::Function # Function Resource: 
         Properties:
@@ -239,6 +239,7 @@ Resources:
                      "setTags": {
                        "Type" : "Task",
                        "Resource": "${ZendeskDemoSetTags.Arn}",
+                       "InputPath": "$",
                        "ResultPath": "$.tags",
                        "OutputPath": "$",
                        "Next": "isClosed"

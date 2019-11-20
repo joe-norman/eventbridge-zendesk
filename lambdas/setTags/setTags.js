@@ -14,11 +14,11 @@ exports.handler = async (event) => {
                     method:"post",
                     url:`https://${process.env.ZendeskDomain}.com/api/v2/tickets/${event.id}/tags.json`,
                     auth:{
-                        username: `${process.env.ZendeskUsername}/token`,
-                        password: process.env.ZendeskPassword
+                        username: `${process.env.ZendeskUserEmail}/token`,
+                        password: process.env.ZendeskAPIKey
                     },
                     data: {
-                     "tags": ['negative']
+                     "tags": [event.sentiment.Sentiment]
                     }
                 })
                 const results = response.data

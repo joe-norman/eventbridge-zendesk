@@ -30,8 +30,8 @@ exports.handler = async (event) => {
                     method:"put",
                     url:`https://${process.env.ZendeskDomain}.com/api/v2/tickets/${event.id}.json`,
                     auth:{
-                        username: `${process.env.ZendeskUsername}/token`,
-                        password: process.env.ZendeskPassword
+                        username: `${process.env.ZendeskUserEmail}/token`,
+                        password: process.env.ZendeskAPIKey
                     },
                     data: { "ticket":{"priority":newEscalate,"type":"problem"}}
                 });
